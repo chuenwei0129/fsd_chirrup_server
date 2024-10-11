@@ -21,6 +21,11 @@ app.use(express.json())
 // User Management
 app.use('/', require('./routes/auth'))
 
+// Social Connection Management
+app.use('/users', require('./routes/userRead'))
+app.use('/users', require('./routes/userFollow'))
+app.use('/', require('./routes/userSearch'))
+
 // 针对任何其他未处理的请求，返回 404 状态码
 app.use((_, res) => {
   res.sendStatus(404)
