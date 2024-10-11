@@ -47,10 +47,12 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
     )
 
     db.run(
+      // prisama 要求联合主键不能为可选，这里改为使用 id 主键
+      // PRIMARY KEY (post_id, user_id),
       `CREATE TABLE likes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 post_id INTEGER,
                 user_id INTEGER,
-                PRIMARY KEY (post_id, user_id),
                 FOREIGN KEY (post_id) REFERENCES posts(post_id),
                 FOREIGN KEY (user_id) REFERENCES users(user_id)
             )`,
@@ -64,10 +66,11 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
     )
 
     db.run(
+      // PRIMARY KEY (user_id, follower_id),
       `CREATE TABLE followers (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER,
                 follower_id INTEGER,
-                PRIMARY KEY (user_id, follower_id),
                 FOREIGN KEY (user_id) REFERENCES users(user_id),
                 FOREIGN KEY (follower_id) REFERENCES users(user_id)
             )`,

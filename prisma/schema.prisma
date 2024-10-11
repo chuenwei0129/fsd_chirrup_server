@@ -7,26 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model followers {
+  id                                 Int    @id @default(autoincrement())
   user_id                            Int?
   follower_id                        Int?
   users_followers_follower_idTousers users? @relation("followers_follower_idTousers", fields: [follower_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
   users_followers_user_idTousers     users? @relation("followers_user_idTousers", fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@id([user_id, follower_id])
-  @@ignore
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model likes {
+  id      Int    @id @default(autoincrement())
   post_id Int?
   user_id Int?
   users   users? @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
   posts   posts? @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@id([post_id, user_id])
-  @@ignore
 }
 
 model posts {
@@ -34,7 +28,7 @@ model posts {
   text           String?
   date_published Int?
   author_id      Int?
-  likes          likes[] @ignore
+  likes          likes[]
   users          users?  @relation(fields: [author_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
@@ -46,8 +40,8 @@ model users {
   password                               String?
   salt                                   String?
   session_token                          String?
-  followers_followers_follower_idTousers followers[] @relation("followers_follower_idTousers") @ignore
-  followers_followers_user_idTousers     followers[] @relation("followers_user_idTousers") @ignore
-  likes                                  likes[]     @ignore
+  followers_followers_follower_idTousers followers[] @relation("followers_follower_idTousers")
+  followers_followers_user_idTousers     followers[] @relation("followers_user_idTousers")
+  likes                                  likes[]
   posts                                  posts[]
 }
