@@ -26,6 +26,13 @@ app.use('/users', require('./routes/userRead'))
 app.use('/users', require('./routes/userFollow'))
 app.use('/', require('./routes/userSearch'))
 
+// Post Management
+app.use('/posts', require('./routes/postCreate'))
+app.use('/posts', require('./routes/postDelete'))
+app.use('/posts', require('./routes/postUpdate'))
+app.use('/posts', require('./routes/postRead'))
+app.use('/posts', require('./routes/postLike'))
+
 // 针对任何其他未处理的请求，返回 404 状态码
 app.use((_, res) => {
   res.sendStatus(404)
