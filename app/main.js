@@ -26,13 +26,6 @@ app.get('/', (req, res, next) => {
   res.json({ status: 'Alive' })
 })
 
-// Other API endpoints: Links go here...
-// You can uncomment the below four lines as you implement the functionality - we'll discuss this structure in week three.
-// require('./app/routes/user.server.routes')(app);
-// require('./app/routes/social.server.routes')(app);
-// require('./app/routes/post.server.routes')(app);
-// require('./app/routes/feed.server.routes')(app);
-
 // Default response for any other request
 app.use((req, res) => {
   res.sendStatus(404)
