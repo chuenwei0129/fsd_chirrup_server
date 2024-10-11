@@ -1,13 +1,14 @@
 {
   "name": "fsd_chirrup_server",
   "version": "1.0.0",
-  "description": "The Chirrup API for the 23/24 Full Stack Web Development assignment",
-  "main": "server.js",
+  "description": "The Chirrup API for the Full Stack Web Development assignment",
+  "main": "./app/main.js",
   "scripts": {
     "extension": "mocha ./tests/extension.tests.js --reporter spec --log-level=warn --timeout 10000",
     "wipe": "mocha ./tests/database.refresh.js --reporter spec --log-level=warn --timeout 10000",
     "test": "mocha ./tests/test.*.js --reporter spec --log-level=warn --timeout 10000",
-    "dev": "nodemon server.js"
+    "dev:server": "nodemon ./app/main.js",
+    "test:wipe": "npm run wipe && npm run test"
   },
   "repository": {
     "type": "git",
