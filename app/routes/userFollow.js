@@ -45,8 +45,7 @@ router.post('/:user_id/follow', authenticate, checkUserId, async (req, res) => {
     })
 
     res.status(200).json({
-      user_id: req.currentLoginUser.user_id,
-      session_token: req.currentLoginUser.session_token,
+      message: 'Successfully followed the user',
     })
   } catch (error) {
     res.status(500).json({ error_message: 'Server Error' })
