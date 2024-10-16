@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const { prisma } = require('../prisima')
+const { prisma } = require('../prisma')
 
 // 按测试要求：不需要登陆也可以 search
 // Search the list of users.

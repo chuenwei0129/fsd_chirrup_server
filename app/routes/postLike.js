@@ -3,7 +3,7 @@ const router = express.Router()
 
 const { authenticate } = require('../middlewares/authenticate')
 const { checkPostId } = require('../middlewares/checkPostId')
-const { prisma } = require('../prisima')
+const { prisma } = require('../prisma')
 
 // Like a post at a given ID. You may like your own posts, but you can not like the same post twice
 router.post('/:post_id/like', authenticate, checkPostId, async (req, res) => {
@@ -17,7 +17,9 @@ router.post('/:post_id/like', authenticate, checkPostId, async (req, res) => {
     })
 
     if (!postIdYouWantToLikeIsExisting) {
-      return res.status(404).send('Post You Want Like not found')
+      return res
+        .status(404)
+        .json({ error_message: 'Post You Want to Like not found' })
     }
 
     // 检查当前用户是否已经喜欢了这篇文章
@@ -29,7 +31,9 @@ router.post('/:post_id/like', authenticate, checkPostId, async (req, res) => {
     })
 
     if (existingLike) {
-      return res.status(403).send('You have already liked this post')
+      return res
+        .status(403)
+        .json({ error_message: 'You have already liked this post' })
     }
 
     // 这里 existingLike 为 null，执行逻辑
@@ -41,10 +45,9 @@ router.post('/:post_id/like', authenticate, checkPostId, async (req, res) => {
       },
     })
 
-    res.status(200).send('Post liked successfully')
-  } catch (error) {
-    console.error(error)
-    res.status(500).send('Server Error')
+    res.status(200).json({ message: 'Post liked successfully' })
+  } catch {
+    res.status(500).json({ error_message: 'Server Error' })
   }
 })
 
@@ -59,7 +62,9 @@ router.delete('/:post_id/like', authenticate, checkPostId, async (req, res) => {
     })
 
     if (!postIdYouWantToUnLikeIsExisting) {
-      return res.status(404).send('Post You Want Like not found')
+      return res
+        .status(404)
+        .json({ error_message: 'Post You Want to Like not found' })
     }
 
     // 检查当前用户是否已经喜欢了这篇文章
@@ -71,9 +76,9 @@ router.delete('/:post_id/like', authenticate, checkPostId, async (req, res) => {
     })
 
     if (!existingLike) {
-      return res
-        .status(403)
-        .send('You can not unlike a post that you are not liking')
+      return res.status(403).json({
+        error_message: 'You can not unlike a post that you are not liking',
+      })
     }
 
     await prisma.likes.deleteMany({
@@ -83,9 +88,9 @@ router.delete('/:post_id/like', authenticate, checkPostId, async (req, res) => {
       },
     })
 
-    res.status(200).send('Post unliked successfully')
-  } catch (error) {
-    res.status(500).send('Server Error')
+    res.status(200).json({ message: 'Post unliked successfully' })
+  } catch {
+    res.status(500).json({ error_message: 'Server Error' })
   }
 })
 

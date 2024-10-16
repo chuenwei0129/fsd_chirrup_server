@@ -1,7 +1,7 @@
 const express = require('express')
 const bcrypt = require('bcrypt')
 
-const { prisma } = require('../prisima')
+const { prisma } = require('../prisma')
 const { authenticate } = require('../middlewares/authenticate')
 
 const router = express.Router()
@@ -37,7 +37,7 @@ router.post('/users', async (req, res) => {
       .status(400)
       .json({ error_message: 'Password must include a number' })
   }
-  if (!/[!@#$%^&*]/.test(password)) {
+  if (!/[!_@#$%^&*]/.test(password)) {
     return res
       .status(400)
       .json({ error_message: 'Password must include a special character' })
@@ -94,13 +94,13 @@ router.post('/login', async (req, res) => {
   if (!username || !password) {
     return res
       .status(400)
-      .json({ error_message: 'Username and password are required.' })
+      .json({ error_message: 'Username and password are required' })
   }
 
   if (Object.keys(req.body).length > 2) {
     return res
       .status(400)
-      .json({ error_message: 'The request contains extra fields.' })
+      .json({ error_message: 'The request contains extra fields' })
   }
 
   try {
@@ -139,7 +139,7 @@ router.post('/login', async (req, res) => {
       session_token: newSessionToken,
     })
   } catch (error) {
-    res.status(500).send('Server Error')
+    res.status(500).json({ error_message: 'Server Error' })
   }
 })
 
@@ -152,7 +152,7 @@ router.post('/logout', authenticate, async (req, res) => {
     })
     res.status(200).json({ message: 'Logout successful' })
   } catch (error) {
-    res.status(500).send('Server Error')
+    res.status(500).json({ error_message: 'Server Error' })
   }
 })
 

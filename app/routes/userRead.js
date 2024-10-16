@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const { prisma } = require('../prisima')
+const { prisma } = require('../prisma')
 const { checkUserId } = require('../middlewares/checkUserId')
 
 router.get('/:user_id', checkUserId, async (req, res) => {

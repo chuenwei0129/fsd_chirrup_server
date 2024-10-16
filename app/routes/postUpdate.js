@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const { prisma } = require('../prisima')
+const { prisma } = require('../prisma')
 const { authenticate } = require('../middlewares/authenticate')
 const { checkPostId } = require('../middlewares/checkPostId')
 const { checkText } = require('../middlewares/checkText')
@@ -20,11 +20,11 @@ router.patch(
       })
 
       if (!post) {
-        return res.status(404).send('Post not found')
+        return res.status(404).json({ error_message: 'Post not found' })
       }
 
       if (post.author_id !== req.currentLoginUser.user_id) {
-        return res.status(403).send('Forbidden')
+        return res.status(403).json({ error_message: 'Forbidden' })
       }
 
       const updatedPost = await prisma.posts.update({
@@ -33,9 +33,8 @@ router.patch(
       })
 
       res.status(200).json(updatedPost)
-    } catch (error) {
-      console.error(error)
-      res.status(500).send('Server Error')
+    } catch {
+      res.status(500).json({ error_message: 'Server Error' })
     }
   }
 )

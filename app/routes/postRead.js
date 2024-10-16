@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const { prisma } = require('../prisima')
+const { prisma } = require('../prisma')
 const { checkPostId } = require('../middlewares/checkPostId')
 
 // 不需要登陆
@@ -35,7 +35,7 @@ router.get('/:post_id', checkPostId, async (req, res) => {
     })
 
     if (!post) {
-      return res.status(404).send('Post not found')
+      return res.status(404).json({ error_message: 'Post not found' })
     }
 
     res.status(200).json({
@@ -50,8 +50,8 @@ router.get('/:post_id', checkPostId, async (req, res) => {
       },
       likes: post.likes.map((like) => like.users),
     })
-  } catch (error) {
-    res.status(500).send('Server Error')
+  } catch {
+    res.status(500).json({ error_message: 'Server Error' })
   }
 })
 

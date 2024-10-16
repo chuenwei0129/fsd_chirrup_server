@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const { authenticate } = require('../middlewares/authenticate')
-const { prisma } = require('../prisima')
+const { prisma } = require('../prisma')
 const { checkUserId } = require('../middlewares/checkUserId')
 
 // A follower is someone who follows you & a following is someone you follow.
@@ -18,7 +18,9 @@ router.post('/:user_id/follow', authenticate, checkUserId, async (req, res) => {
   })
 
   if (!userIdYouWantToFollowIsExisting) {
-    return res.status(404).send('User You Want Follow not found')
+    return res
+      .status(404)
+      .json({ error_message: 'User You Want Follow not found' })
   }
 
   try {
@@ -30,7 +32,9 @@ router.post('/:user_id/follow', authenticate, checkUserId, async (req, res) => {
     })
 
     if (existingFollow) {
-      return res.status(403).send('You have already follow this user')
+      return res
+        .status(403)
+        .json({ error_message: 'You have already followed this user' })
     }
 
     await prisma.followers.create({
@@ -40,12 +44,12 @@ router.post('/:user_id/follow', authenticate, checkUserId, async (req, res) => {
       },
     })
 
-    res.status(200).send({
+    res.status(200).json({
       user_id: req.currentLoginUser.user_id,
       session_token: req.currentLoginUser.session_token,
     })
   } catch (error) {
-    res.status(500).send('Server Error')
+    res.status(500).json({ error_message: 'Server Error' })
   }
 })
 
@@ -66,7 +70,9 @@ router.delete(
       })
 
       if (!userIdYouWantToUnFollowIsExisting) {
-        return res.status(404).send('User You Want UnFollow not found')
+        return res
+          .status(404)
+          .json({ error_message: 'User You Want to UnFollow not found' })
       }
 
       const existingFollow = await prisma.followers.findFirst({
@@ -77,9 +83,10 @@ router.delete(
       })
 
       if (!existingFollow) {
-        return res
-          .status(403)
-          .send('You can not unfollow a user that you are not following')
+        return res.status(403).json({
+          error_message:
+            'You cannot unfollow a user that you are not following',
+        })
       }
 
       await prisma.followers.deleteMany({
@@ -89,9 +96,9 @@ router.delete(
         },
       })
 
-      res.status(200).send('User unfollow successfully')
+      res.status(200).json({ message: 'User unfollowed successfully' })
     } catch (error) {
-      res.status(500).send('Server Error')
+      res.status(500).json({ error_message: 'Server Error' })
     }
   }
 )

@@ -1,4 +1,4 @@
-const { prisma } = require('../prisima')
+const { prisma } = require('../prisma')
 
 const authenticate = async (req, res, next) => {
   // 遵循测试用例

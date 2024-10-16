@@ -1,7 +1,8 @@
+// app/routes/postCreate.js (1-24)
 const express = require('express')
 const router = express.Router()
 
-const { prisma } = require('../prisima')
+const { prisma } = require('../prisma')
 const { authenticate } = require('../middlewares/authenticate')
 const { checkText } = require('../middlewares/checkText')
 
@@ -16,7 +17,7 @@ router.post('/', authenticate, checkText, async (req, res) => {
     })
     res.status(201).json({ post_id: newPost['post_id'] })
   } catch (error) {
-    res.status(500).send('Server Error')
+    res.status(500).json({ error_message: 'Server Error' })
   }
 })
 
