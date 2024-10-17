@@ -1,4 +1,4 @@
-// const path = require('node:path')
+const path = require('node:path')
 
 const express = require('express')
 const morgan = require('morgan')
@@ -13,11 +13,17 @@ app.use(morgan('tiny'))
 // 从 Express 版本 4.16+ 开始，默认 Express 软件包中包含了他们自己的 body-parser 实现，因此无需再额外安装 body-parser。
 // 请求中间件
 app.use(cors())
-app.use(express.urlencoded({ extended: false }))
+// 用于解析 URL 编码的请求体。这主要用于处理表单提交，其中表单数据被编码为 URL 编码格式（application/x-www-form-urlencoded）。
+app.use(express.urlencoded({ extended: true }))
+// 用于解析 JSON 格式的请求体。这对于处理 AJAX 请求或内容类型为 application/json 的请求非常有用。
 app.use(express.json())
-// app.use(express.static(path.join(__dirname, 'public')))
+// 用于托管静态文件，例如图片、CSS、JavaScript 文件等。你可以指定一个或多个目录作为静态资源目录，这些资源可以直接通过 Web 访问。
+app.use(express.static(path.resolve(__dirname, 'public')))
 
-// 路由
+// 文件上传
+app.use('/upload', require('./routes/bigFileUpload'))
+app.use('/upload', require('./routes/fileUpload'))
+
 // User Management
 app.use('/', require('./routes/auth'))
 
@@ -39,5 +45,5 @@ app.use((_, res) => {
 })
 
 app.listen(HTTP_PORT, () => {
-  console.log(`Server running at http://localhost:${HTTP_PORT}/`)
+  console.log(`Server running at http://localhost:${HTTP_PORT}`)
 })
