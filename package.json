@@ -44,6 +44,7 @@
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
+    "@gradio/client": "^1.7.0",
     "prisma": "^5.20.0"
   }
 }

@@ -197,5 +197,6 @@ docs/_book
 
 # TODO: where does this rule come from?
 test/
+uploads/
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,node,react,vue

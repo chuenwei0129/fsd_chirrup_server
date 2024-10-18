@@ -8,7 +8,7 @@ const router = express.Router()
 
 // 文件上传
 // 用 multer 处理文件上传，指定保存目录为 uploads
-const storage1 = multer({ dest: path.resolve(__dirname, '../../uploads1') })
+const storage1 = multer({ dest: path.resolve(__dirname, '../../uploads') })
 
 router.post('/file', async (req, res) => {
   const uploadSingleFilePromise = promisify(storage1.single('file'))
